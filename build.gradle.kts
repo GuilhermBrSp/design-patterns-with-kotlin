@@ -15,7 +15,7 @@ repositories {
 dependencies {
     testImplementation("io.mockk:mockk:1.11.0")
     testImplementation("org.amshove.kluent:kluent:1.65")
-    testImplementation("org.spockframework:spock-core:2.0-groovy-3.0")
+    testImplementation("org.spekframework.spek2:spek-dsl-jvm:2.0.16")
     testImplementation(kotlin("test"))
 }
 
