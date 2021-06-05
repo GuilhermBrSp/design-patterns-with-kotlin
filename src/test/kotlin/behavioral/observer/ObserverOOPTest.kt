@@ -1,7 +1,7 @@
 package behavioral.observer
 
-import behavioral.observer.EventsManager.EventType.*
-import behavioral.observer.EventsManager.UpdateData
+import behavioral.observer.SystemEventsManagerOOP.SystemEventType.*
+import behavioral.observer.SystemEventsManagerOOP.EventData
 import io.mockk.mockk
 import io.mockk.verify
 import org.amshove.kluent.`should be equal to`
@@ -11,44 +11,44 @@ import org.junit.jupiter.api.Test
 
 internal class ObserverOOPTest {
 
-    private lateinit var eventsManager: EventsManager
+    private lateinit var systemEventsManager: SystemEventsManagerOOP
 
     @BeforeEach
     fun setEventsManager() = run {
-        eventsManager = EventsManager()
+        systemEventsManager = SystemEventsManagerOOP()
     }
 
     @Test
-    fun `should subscribe a listener relating an EventType when using the subscribe method`() {
+    fun `should subscribe a subscriber relating an EventType when using the subscribe method`() {
         val logSubscriber = LogSubscriber()
         val emailSubscriber = EmailSubscriber()
 
-        eventsManager.subscribe(logSubscriber, SYSTEM_SUSPEND)
-        eventsManager.subscribe(emailSubscriber, SYSTEM_ON)
+        systemEventsManager.subscribe(logSubscriber, SYSTEM_SUSPEND)
+        systemEventsManager.subscribe(emailSubscriber, SYSTEM_ON)
 
-        eventsManager.listeners.size `should be equal to` 2
+        systemEventsManager.subscribers.size `should be equal to` 2
     }
 
     @Test
-    fun `should unsubscribe a listener when using the unsubscribe method`() {
+    fun `should unsubscribe a subscriber when using the unsubscribe method`() {
         val logSubscriber = LogSubscriber()
         val emailSubscriber = EmailSubscriber()
 
-        eventsManager.subscribe(logSubscriber, SYSTEM_SUSPEND)
-        eventsManager.subscribe(emailSubscriber, SYSTEM_ON)
-        eventsManager.listeners.size `should be equal to` 2
+        systemEventsManager.subscribe(logSubscriber, SYSTEM_SUSPEND)
+        systemEventsManager.subscribe(emailSubscriber, SYSTEM_ON)
+        systemEventsManager.subscribers.size `should be equal to` 2
 
-        eventsManager.unsubscribe(logSubscriber)
-        eventsManager.unsubscribe(emailSubscriber)
-        eventsManager.listeners.size `should be equal to` 0
+        systemEventsManager.unsubscribe(logSubscriber)
+        systemEventsManager.unsubscribe(emailSubscriber)
+        systemEventsManager.subscribers.size `should be equal to` 0
     }
 
     @Test
-    fun `should notify all listeners with update when using the notify method`() {
+    fun `should notify all subscribers with update when using the notify method`() {
         val logSubscriber = mockk<LogSubscriber>(relaxed = true)
         val emailSubscriber = mockk<EmailSubscriber>(relaxed = true)
 
-        eventsManager.run {
+        systemEventsManager.run {
             subscribe(logSubscriber, SYSTEM_SUSPEND)
             subscribe(emailSubscriber, SYSTEM_ON)
 
@@ -62,7 +62,7 @@ internal class ObserverOOPTest {
 
         verify(exactly = 1) {
             logSubscriber.update(
-                UpdateData(
+                EventData(
                     "System was being suspended at 06:00 PM",
                     SYSTEM_SUSPEND,
                     )
@@ -70,7 +70,7 @@ internal class ObserverOOPTest {
         }
         verify(exactly = 1) {
             emailSubscriber.update(
-                UpdateData(
+                EventData(
                     "System was being initialized at 09:00 AM",
                     SYSTEM_ON,
                 )
@@ -78,7 +78,7 @@ internal class ObserverOOPTest {
         }
         verify(exactly = 1) {
             emailSubscriber.update(
-                UpdateData(
+                EventData(
                     "System was being initialized at 10:00 AM",
                     SYSTEM_ON,
                 )

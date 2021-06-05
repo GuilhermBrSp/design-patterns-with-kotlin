@@ -1,5 +1,7 @@
 package behavioral.observer
 
+import behavioral.observer.SystemEventsManagerOOP.*
+
 // Observer is a behavioral design pattern that lets you define a subscription mechanism to notify
 // multiple objects about any events that happen to the object they're observing.
 
@@ -10,49 +12,54 @@ package behavioral.observer
 // Those subscribers will implement a common interface,
 // which will enable the Publisher to send its notifications.
 
+// The code below implements the observer pattern to enable the monitoring of power events of an imaginary system,
+// where different classes can implement custom business logic to deal with specific power events notifications (like
+// logging the event somewhere or sending an email).
+// This implementation uses an Object Oriented approach.
+
 
 // This is the "publisher", also called as the "subject"
-class EventsManager() {
-    var listeners: Map<Subscriber, EventType> = emptyMap()
+class SystemEventsManagerOOP() {
+    var subscribers: Map<Subscriber, SystemEventType> = emptyMap()
         private set
 
-    fun subscribe(subscriber: Subscriber, eventType: EventType) = apply {
-        listeners = listeners.plus(mapOf(subscriber to eventType))
+    fun subscribe(subscriber: Subscriber, eventType: SystemEventType) = apply {
+        subscribers = subscribers.plus(mapOf(subscriber to eventType))
     }
 
     fun unsubscribe(subscriber: Subscriber) = apply {
-        listeners = listeners.minus(subscriber)
+        subscribers = subscribers.minus(subscriber)
     }
 
-    fun notify(eventType: EventType, message: String) =
-        listeners
+    fun notify(eventType: SystemEventType, message: String) =
+        subscribers
             .filter { it.value == eventType }
-            .map { it.key.update(UpdateData(message, eventType)) }
+            .map { it.key.update(EventData(message, eventType)) }
 
-    enum class EventType {
+    enum class SystemEventType {
         SYSTEM_ON,
         SYSTEM_OFF,
         SYSTEM_SUSPEND
     }
 
-    data class UpdateData(val message: String, val eventType: EventType)
+    data class EventData(val message: String, val eventType: SystemEventType)
 }
 
 // This is the "subscriber/observer/listener" interface, defining the default method to receive a notification
 interface Subscriber {
-    fun update(data: EventsManager.UpdateData)
+    fun update(data: EventData)
 }
 
 // Concrete implementation of the "subscriber" interface with custom logic
 class LogSubscriber : Subscriber {
-    override fun update(data: EventsManager.UpdateData) =
+    override fun update(data: EventData) =
         println("Logging the event ${data.eventType} with message ${data.message}")
 
 }
 
 // Concrete implementation of the "subscriber" interface with custom logic
 class EmailSubscriber : Subscriber {
-    override fun update(data: EventsManager.UpdateData) =
+    override fun update(data: EventData) =
         println("Sending email to inform the event ${data.eventType} with message ${data.message}")
 
 }

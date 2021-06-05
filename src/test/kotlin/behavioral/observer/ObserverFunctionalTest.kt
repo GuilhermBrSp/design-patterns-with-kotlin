@@ -1,7 +1,7 @@
 package behavioral.observer
 
-import behavioral.observer.EventsManagerFunctional.EventTypeFunc.*
-import behavioral.observer.EventsManagerFunctional.EventMessage
+import behavioral.observer.SystemEventsManagerFunc.EventType.*
+import behavioral.observer.SystemEventsManagerFunc.EventMessage
 import io.mockk.mockk
 import io.mockk.verify
 import org.amshove.kluent.`should be equal to`
@@ -11,11 +11,11 @@ import org.junit.jupiter.api.Test
 
 internal class ObserverFunctionalTest {
 
-    private lateinit var eventsManager: EventsManagerFunctional
+    private lateinit var systemEventsManager: SystemEventsManagerFunc
 
     @BeforeEach
     fun setEventsManager() = run {
-        eventsManager = EventsManagerFunctional()
+        systemEventsManager = SystemEventsManagerFunc()
     }
 
     @Test
@@ -23,10 +23,10 @@ internal class ObserverFunctionalTest {
         val logSubscriber = LoggerService()
         val emailSubscriber = MailerService()
 
-        eventsManager.subscribe(logSubscriber::logEvent, SYSTEM_SUSPEND)
-        eventsManager.subscribe(emailSubscriber::sendEmail, SYSTEM_ON)
+        systemEventsManager.subscribe(logSubscriber::logEvent, SYSTEM_SUSPEND)
+        systemEventsManager.subscribe(emailSubscriber::sendEmail, SYSTEM_ON)
 
-        eventsManager.listeners.size `should be equal to` 2
+        systemEventsManager.listeners.size `should be equal to` 2
     }
 
     @Test
@@ -34,13 +34,13 @@ internal class ObserverFunctionalTest {
         val logSubscriber = LoggerService()
         val emailSubscriber = MailerService()
 
-        eventsManager.subscribe(logSubscriber::logEvent, SYSTEM_SUSPEND)
-        eventsManager.subscribe(emailSubscriber::sendEmail, SYSTEM_ON)
-        eventsManager.listeners.size `should be equal to` 2
+        systemEventsManager.subscribe(logSubscriber::logEvent, SYSTEM_SUSPEND)
+        systemEventsManager.subscribe(emailSubscriber::sendEmail, SYSTEM_ON)
+        systemEventsManager.listeners.size `should be equal to` 2
 
-        eventsManager.unsubscribe(logSubscriber::logEvent)
-        eventsManager.unsubscribe(emailSubscriber::sendEmail)
-        eventsManager.listeners.size `should be equal to` 0
+        systemEventsManager.unsubscribe(logSubscriber::logEvent)
+        systemEventsManager.unsubscribe(emailSubscriber::sendEmail)
+        systemEventsManager.listeners.size `should be equal to` 0
     }
 
     @Test
@@ -48,7 +48,7 @@ internal class ObserverFunctionalTest {
         val logSubscriber = mockk<LoggerService>(relaxed = true)
         val emailSubscriber = mockk<MailerService>(relaxed = true)
 
-        eventsManager.run {
+        systemEventsManager.run {
             subscribe(logSubscriber::logEvent, SYSTEM_SUSPEND)
             subscribe(emailSubscriber::sendEmail, SYSTEM_ON)
 

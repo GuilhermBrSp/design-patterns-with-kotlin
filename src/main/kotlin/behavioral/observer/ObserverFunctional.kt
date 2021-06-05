@@ -10,29 +10,34 @@ package behavioral.observer
 // Those subscribers will implement a common interface,
 // which will enable the Publisher to send its notifications.
 
-// The listener/subscriber/observer function signature, acting as our "interface"
+// The code below implements the observer pattern to enable the monitoring of power events of an imaginary system,
+// where different classes can implement custom business logic to deal with specific power events notifications (like
+// logging the event somewhere or sending an email).
+// This implementation uses an Functional approach.
+
+// The "listener/subscriber/observer" function signature, acting as our "interface"
 // We are also using the kotlin typealias to give a name to this type so it can be more readable on the code
-typealias Listener =  (EventsManagerFunctional.EventMessage) -> Unit
+typealias Listener = (SystemEventsManagerFunc.EventMessage) -> Unit
 
 // Sample class containing a function that follows the Listener signature an thus can be used as a Listener
 class LoggerService {
-    fun logEvent(data: EventsManagerFunctional.EventMessage): Unit =
+    fun logEvent(data: SystemEventsManagerFunc.EventMessage): Unit =
         println("Logging the event ${data.eventType} with description ${data.description}")
 }
 
 // Sample class containing a function that follows the Listener signature an thus can be used as a Listener
 class MailerService {
-    fun sendEmail(data: EventsManagerFunctional.EventMessage): Unit =
+    fun sendEmail(data: SystemEventsManagerFunc.EventMessage): Unit =
         println("Sending email to inform the event ${data.eventType} with description ${data.description}")
 }
 
 // This is the "publisher", also called as the "subject"
-class EventsManagerFunctional() {
+class SystemEventsManagerFunc {
 
-    var listeners: Map<Listener, EventTypeFunc> = emptyMap()
+    var listeners: Map<Listener, EventType> = emptyMap()
         private set
 
-    fun subscribe(listener: Listener, eventType: EventTypeFunc) = apply {
+    fun subscribe(listener: Listener, eventType: EventType) = apply {
         listeners = listeners.plus(mapOf(listener to eventType))
     }
 
@@ -40,20 +45,18 @@ class EventsManagerFunctional() {
         listeners = listeners.minus(listener)
     }
 
-    fun notify(eventType: EventTypeFunc, message: String) =
+    fun notify(eventType: EventType, message: String) =
         listeners
             .filter { it.value == eventType }
             .map { it.key(EventMessage(message, eventType)) }
 
-    data class EventMessage(val description: String, val eventType: EventTypeFunc)
+    data class EventMessage(val description: String, val eventType: EventType)
 
-
-    enum class EventTypeFunc {
+    enum class EventType {
         SYSTEM_ON,
         SYSTEM_OFF,
         SYSTEM_SUSPEND
     }
-
 }
 
 
