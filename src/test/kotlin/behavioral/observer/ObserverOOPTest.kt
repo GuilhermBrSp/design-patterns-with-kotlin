@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 
-internal class ObserverTest {
+internal class ObserverOOPTest {
 
     private lateinit var eventsManager: EventsManager
 
