@@ -1,6 +1,6 @@
 package behavioral.observer
 
-// Observer is a behavioral design pattern that lets you define a subscription mechanism to notify
+// Observer (AKA Event-Subscriber, Listener) is a behavioral design pattern that lets you define a subscription mechanism to notify
 // multiple objects about any events that happen to the object they're observing.
 
 // The fundamental logic is based on the principle that the Publisher (which holds the subject)

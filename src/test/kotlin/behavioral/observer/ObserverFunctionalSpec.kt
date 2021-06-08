@@ -12,7 +12,7 @@ import org.spekframework.spek2.style.specification.describe
 
 
 internal class ObserverFunctionalSpec : Spek({
-    describe("Observer pattern implementation with functional features") {
+    describe("Observer pattern implementation with Functional Programming features") {
         lateinit var systemEventsManager: SystemEventsManagerFunc
 
         beforeEachTest { systemEventsManager = SystemEventsManagerFunc() }
