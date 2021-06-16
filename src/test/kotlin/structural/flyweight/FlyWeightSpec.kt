@@ -14,7 +14,7 @@ internal class FlyWeightSpec : Spek({
     describe("FlyWeight pattern implementation") {
         describe("getTreeType() method from FlyWeightFactory class") {
             context("when the requested TreeType doesn't exist on cache") {
-                it("it create a new one, save and return it") {
+                it("create a new one, save and return it") {
                     val expected = TreeTypeFlyWeight("Sycamore Tree", "light green", "text_03.jpg")
                     TreeFactory.treeTypes = listOf(
                         TreeTypeFlyWeight("Maple Tree", "orange", "text_01.jpg"),
@@ -29,7 +29,7 @@ internal class FlyWeightSpec : Spek({
                 }
             }
             context("when the requested TreeType does exist on cache") {
-                it("it just returns it without adding anything") {
+                it("just returns it without adding anything") {
                     val expected = TreeTypeFlyWeight("Pine Tree", "dark green", "text_03.jpg")
                     TreeFactory.treeTypes = listOf(
                         TreeTypeFlyWeight("Maple Tree", "orange", "text_01.jpg"),

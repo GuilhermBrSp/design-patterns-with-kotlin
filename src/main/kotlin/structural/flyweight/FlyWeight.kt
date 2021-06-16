@@ -43,6 +43,7 @@ data class Tree(
 class TreeFactory {
     companion object {
 
+        // Our "cache" of flyweight objects
         var treeTypes: List<TreeTypeFlyWeight> = emptyList()
 
         fun getTreeType(name: String, color: String, texture: String): TreeTypeFlyWeight =
