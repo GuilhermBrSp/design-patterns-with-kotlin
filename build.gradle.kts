@@ -13,6 +13,7 @@ repositories {
 }
 
 dependencies {
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
     testImplementation("io.mockk:mockk:1.11.0")
     testImplementation("org.amshove.kluent:kluent:1.65")
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:2.0.16")
