@@ -72,5 +72,4 @@ internal class ChainOfResponsibilityOOPSpec : Spek({
             }
         }
     }
-
 })
